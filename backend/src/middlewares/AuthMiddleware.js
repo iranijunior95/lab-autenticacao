@@ -35,6 +35,30 @@ function validateUserRegistrationData(req, res, next) {
     next();
 }
 
+function validateLoginData(req, res, next) {
+    const { email, password } = req.body;
+
+    const errors = [];
+
+    if(!email || typeof email !== "string" || email.trim() === "") {
+        errors.push({ field: "email", message: "O campo email é obrigatório" });
+    }
+
+    if(!password || typeof password !== "string" || password.trim() === "") {
+        errors.push({ field: "password", message: "O campo password é obrigatório" });
+    }
+
+    if(errors.length > 0) {
+        return res.status(422).json({
+            message: "Erros de validação",
+            errors
+        });
+    }
+
+    next();
+}
+
 export default {
-    validateUserRegistrationData
+    validateUserRegistrationData,
+    validateLoginData
 }
