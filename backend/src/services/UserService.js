@@ -30,7 +30,22 @@ async function createUser({ name, email, password }) {
     return userCreated;
 }
 
+async function searchForUserById(id) {
+    const returnedUser = await Users.findOne({ _id: id, status: "active" });
+
+    if(!returnedUser) {
+        throw AppError("User não encontrado!", 401);
+    }
+
+    return {
+        name: returnedUser.name,
+        email: returnedUser.email,
+        avatar: returnedUser.avatar
+    }
+}
+
 export default {
-    createUser
+    createUser,
+    searchForUserById
 }
 

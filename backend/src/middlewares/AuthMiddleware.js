@@ -1,4 +1,6 @@
 import validator from "validator";
+import jwt from "jsonwebtoken";
+import { JWT_SECRET } from "../config/environmentVariables.js";
 
 function validateUserRegistrationData(req, res, next) {
     const { name, email, password } = req.body;
@@ -58,7 +60,33 @@ function validateLoginData(req, res, next) {
     next();
 }
 
+function validateAccessAuthentication(req, res, next) {
+    const token = req.cookies?.token;
+
+    if (!token || typeof token !== "string") {
+        return res.status(401).json({ message: "Não autorizado" });
+    }
+
+    try {
+        const decodedToken = jwt.verify(token, JWT_SECRET);
+
+        req.user = decodedToken;
+
+        return next();
+
+    } catch (error) {
+        console.log("Erro na validação do token:", error);
+
+        if (error.name === "TokenExpiredError") {
+            return res.status(401).json({ message: "Sessão expirada" });
+        }
+
+        return res.status(401).json({ message: "Não autorizado" });
+    }
+}
+
 export default {
     validateUserRegistrationData,
-    validateLoginData
+    validateLoginData,
+    validateAccessAuthentication
 }
