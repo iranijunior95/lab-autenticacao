@@ -37,11 +37,7 @@ async function searchForUserById(id) {
         throw AppError("User não encontrado!", 401);
     }
 
-    return {
-        name: returnedUser.name,
-        email: returnedUser.email,
-        avatar: returnedUser.avatar
-    }
+    return returnedUser;
 }
 
 export default {

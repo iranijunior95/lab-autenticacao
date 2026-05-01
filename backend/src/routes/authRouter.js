@@ -8,4 +8,6 @@ authRouter.post("/auth/register-user", AuthMiddleware.validateUserRegistrationDa
 authRouter.post("/auth/login", AuthMiddleware.validateLoginData, AuthController.login);
 authRouter.get("/auth/logout", AuthController.logout);
 
+authRouter.get("/auth/me", AuthMiddleware.validateAccessAuthentication, AuthController.returnsMeAuthentication);
+
 export default authRouter;

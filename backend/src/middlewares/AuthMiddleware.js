@@ -72,7 +72,7 @@ function validateAccessAuthentication(req, res, next) {
 
         req.user = decodedToken;
 
-        return next();
+        next();
 
     } catch (error) {
         console.log("Erro na validação do token:", error);

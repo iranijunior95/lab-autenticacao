@@ -8,7 +8,11 @@ async function searchForUserById(req, res) {
 
         return res.status(200).json({ 
             message: "User localizado com sucesso!",
-            user: userData 
+            user: {
+                name: userData.name,
+                email: userData.email,
+                avatar: userData.avatar
+            } 
         });
 
     } catch (error) {
